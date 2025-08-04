@@ -9,7 +9,7 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from 'react-native-linear-gradient';
 import { ChevronLeft, CreditCard as Edit3, MoveVertical as MoreVertical, Plus, Mic } from 'lucide-react-native';
 
 const AiScreenmain = () => {

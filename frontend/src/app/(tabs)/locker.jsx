@@ -1,15 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const LoginCom = () => {
+const locker = () => {
   return (
     <View>
-      <Text>this is a login form</Text>
-      
+      <Text>locker</Text>
     </View>
   )
 }
 
-export default LoginCom
+export default locker
 
 const styles = StyleSheet.create({})
