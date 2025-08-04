@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const ai_home_screen = () => {
+const AiHomeScreen = () => {
   return (
     <View>
-      <Text>ai_home_screen</Text>
+      <Text>AiHomeScreen</Text>
     </View>
   )
 }
 
-export default ai_home_screen
+export default AiHomeScreen
 
 const styles = StyleSheet.create({})

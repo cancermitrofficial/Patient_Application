@@ -2,13 +2,11 @@
 import React from 'react'
 import { Stack } from 'expo-router'
 
+
 const RootLayout = () => {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="(authcom)/login_com" options={{ headerShown: false }} />
-      <Stack.Screen name="(authcom)/register_com" options={{ headerShown: false }} />
-      <Stack.Screen name="(maincom)/ai_home_screen" options={{ headerShown: false }} />
       {/* Add more screens as needed */}
     </Stack>
     
