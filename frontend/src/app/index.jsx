@@ -9,6 +9,7 @@ const index = () => {
       {/* <Text>index</Text> */}
       {/* <Logincom /> */}
       <Aiscreenmain />
+      <Text>Hey There</Text>
     </View>
   )
 }
