@@ -1,15 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const LoginCom = () => {
+const home = () => {
   return (
     <View>
-      <Text>this is a login form</Text>
-      
+      <Text>home</Text>
     </View>
   )
 }
 
-export default LoginCom
+export default home
 
 const styles = StyleSheet.create({})
