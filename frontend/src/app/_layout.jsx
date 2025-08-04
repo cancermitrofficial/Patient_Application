@@ -8,5 +8,5 @@ const RootLayout = () => {
     </View>
   )
 }
-
+  
 export default RootLayout   
