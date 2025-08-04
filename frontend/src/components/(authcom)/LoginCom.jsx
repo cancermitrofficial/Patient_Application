@@ -4,7 +4,7 @@ import React from 'react'
 const LoginCom = () => {
   return (
     <View>
-      <Text>LoginCom</Text>
+      <Text>this is a login form</Text>
     </View>
   )
 }
