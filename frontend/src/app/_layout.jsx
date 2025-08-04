@@ -6,9 +6,10 @@ const RootLayout = () => {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="(authcom)/RegisterCom" options={{ headerShown: false }} />
-      <Stack.Screen name="(authcom)/LoginCom" options={{ headerShown: false }} />
-      <Stack.Screen name="(maincom)/AiScreenmain" options={{ headerShown: false }} />
+      <Stack.Screen name="(authcom)/login_com" options={{ headerShown: false }} />
+      <Stack.Screen name="(authcom)/register_com" options={{ headerShown: false }} />
+      <Stack.Screen name="(maincom)/ai_home_screen" options={{ headerShown: false }} />
+      {/* Add more screens as needed */}
     </Stack>
     
   )
