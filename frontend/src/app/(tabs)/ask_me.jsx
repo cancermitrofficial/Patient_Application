@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { Defs, G, Mask, Path, Rect, Svg } from 'react-native-svg';
+import { Circle, Defs, G, Mask, Path, Rect, Svg } from 'react-native-svg';
 
 import CameraMediaInterface from './ask_me_upload';
 
@@ -13,6 +13,14 @@ const LoginCom = () => {
   const openCameraMediaInterface = () => {
     setShowModal(true);
   };
+
+
+
+  const reports = [
+    { id: 1, name: 'Blood Report.pdf' },
+    { id: 2, name: 'Blood Report 2.pdf' },
+    { id: 3, name: 'Blood Report 3.pdf' }
+  ];
 
   return (
     <View style={styles.mainContainer}>
@@ -48,8 +56,22 @@ const LoginCom = () => {
         </View>
       </View>
       <View style={styles.middle_sec}>
-        <Text style={styles.que}>How can I help you ?</Text>
-        <Text style={styles.sec_code}>Enter the security code sent to <Text style={styles.num}>+91 9654102315</Text> </Text>
+        <View style={styles.middle_sec_txt}>
+          <Text style={styles.que}>How can I help you ?</Text>
+          <Text style={styles.sec_code}>Enter the security code sent to <Text style={styles.num}>+91 9654102315</Text> </Text>
+        </View>
+        <Text style={styles.response_sec}>Explain the difference between radiation and chemotherapy?</Text>
+        <View style={styles.processing_box}>
+          <Svg style={styles.processing_color_circle} xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <Circle cx="5" cy="5" r="5" fill="#FCC300"/>
+          </Svg>
+          <Svg style={styles.processing_color_circle} xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
+            <Circle cx="5" cy="5" r="5" fill="#ACB8C0"/>
+          </Svg>
+          <Svg style={styles.processing_color_circle} xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
+            <Circle cx="5" cy="5" r="5" fill="#ACB8C0"/>
+          </Svg>
+        </View>
       </View>
       {/* <KeyboardAvoidingView> */}
         <View style={styles.sticky_sec}>
@@ -62,6 +84,44 @@ const LoginCom = () => {
             <Text style={styles.sugg_txt}>Product Information</Text>
           </ScrollView>
           <View style={styles.inputBox}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.uploaded_report_section}>
+              { 
+                reports.map((report) => (
+                    <View style={styles.uploaded_report} key={report.id}>
+                      <View style={styles.report_cross}>
+                        <Svg style={styles.report_cross_icon} width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <Path d="M11.9923 4.85046L11.1507 4.00879L8.00007 7.15938L4.84948 4.00879L4.00781 4.85046L7.15841 8.00105L4.00781 11.1516L4.84948 11.9933L8.00007 8.84272L11.1507 11.9933L11.9923 11.1516L8.84174 8.00105L11.9923 4.85046Z" fill="#656565"/>
+                        </Svg>
+                      </View>
+                      <View style={styles.uploaded_report_icon_txt}>
+                        <View style={styles.report_icon}>
+                            <Svg style={styles.report_svg} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                              <Mask id="mask0_658_2631" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                <Rect width="24" height="24" fill="#D9D9D9"/>
+                              </Mask>
+                              <G mask="url(#mask0_658_2631)">
+                                <Path d="M5 21C4.45 21 3.97917 20.8042 3.5875 20.4125C3.19583 20.0208 3 19.55 3 19V5C3 4.45 3.19583 3.97917 3.5875 3.5875C3.97917 3.19583 4.45 3 5 3H19C19.55 3 20.0208 3.19583 20.4125 3.5875C20.8042 3.97917 21 4.45 21 5V19C21 19.55 20.8042 20.0208 20.4125 20.4125C20.0208 20.8042 19.55 21 19 21H5ZM5 19H19V5H5V19ZM8 17H13C13.2833 17 13.5208 16.9042 13.7125 16.7125C13.9042 16.5208 14 16.2833 14 16C14 15.7167 13.9042 15.4792 13.7125 15.2875C13.5208 15.0958 13.2833 15 13 15H8C7.71667 15 7.47917 15.0958 7.2875 15.2875C7.09583 15.4792 7 15.7167 7 16C7 16.2833 7.09583 16.5208 7.2875 16.7125C7.47917 16.9042 7.71667 17 8 17ZM8 13H16C16.2833 13 16.5208 12.9042 16.7125 12.7125C16.9042 12.5208 17 12.2833 17 12C17 11.7167 16.9042 11.4792 16.7125 11.2875C16.5208 11.0958 16.2833 11 16 11H8C7.71667 11 7.47917 11.0958 7.2875 11.2875C7.09583 11.4792 7 11.7167 7 12C7 12.2833 7.09583 12.5208 7.2875 12.7125C7.47917 12.9042 7.71667 13 8 13ZM8 9H16C16.2833 9 16.5208 8.90417 16.7125 8.7125C16.9042 8.52083 17 8.28333 17 8C17 7.71667 16.9042 7.47917 16.7125 7.2875C16.5208 7.09583 16.2833 7 16 7H8C7.71667 7 7.47917 7.09583 7.2875 7.2875C7.09583 7.47917 7 7.71667 7 8C7 8.28333 7.09583 8.52083 7.2875 8.7125C7.47917 8.90417 7.71667 9 8 9Z" fill="#1C1B1F"/>
+                              </G>
+                            </Svg>
+                        </View>
+                        <View style={styles.uploaded_report_txt}>
+                          <Text style={styles.report_txt}>Blood Report.pdf</Text>
+                        </View>
+                      </View>
+                    </View>
+
+                  // Loaded report Section
+
+                  //   <View key={report.id} style={styles.uploaded_report_load}>
+                  //   <View style={styles.report_cross}>
+                  //     <Svg style={styles.report_cross_icon} width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  //       <Path d="M11.9923 4.85046L11.1507 4.00879L8.00007 7.15938L4.84948 4.00879L4.00781 4.85046L7.15841 8.00105L4.00781 11.1516L4.84948 11.9933L8.00007 8.84272L11.1507 11.9933L11.9923 11.1516L8.84174 8.00105L11.9923 4.85046Z" fill="#656565"/>
+                  //     </Svg>
+                  //   </View>
+                  // </View>
+                ))
+              }
+            </ScrollView>
             <TextInput type="text" placeholder='Ask me.....' multiline={true} numberOfLines={2} width={300} height={300} style={styles.input} />
             <View style={styles.add_mic_svgs}>
               <View style={styles.add_icon} onPress={openCameraMediaInterface}>
@@ -69,10 +129,30 @@ const LoginCom = () => {
                   <Path d="M6 8H1C0.716667 8 0.479167 7.90417 0.2875 7.7125C0.0958333 7.52083 0 7.28333 0 7C0 6.71667 0.0958333 6.47917 0.2875 6.2875C0.479167 6.09583 0.716667 6 1 6H6V1C6 0.716667 6.09583 0.479167 6.2875 0.2875C6.47917 0.0958333 6.71667 0 7 0C7.28333 0 7.52083 0.0958333 7.7125 0.2875C7.90417 0.479167 8 0.716667 8 1V6H13C13.2833 6 13.5208 6.09583 13.7125 6.2875C13.9042 6.47917 14 6.71667 14 7C14 7.28333 13.9042 7.52083 13.7125 7.7125C13.5208 7.90417 13.2833 8 13 8H8V13C8 13.2833 7.90417 13.5208 7.7125 13.7125C7.52083 13.9042 7.28333 14 7 14C6.71667 14 6.47917 13.9042 6.2875 13.7125C6.09583 13.5208 6 13.2833 6 13V8Z" fill="#F8F8F8"/>
                 </Svg>
               </View>
-              <View style={styles.mic}>
+              {/* <View style={styles.mic}>
                 <Svg style={styles.mic_svg} xmlns="http://www.w3.org/2000/Svg" width="20" height="22" viewBox="0 0 20 22" fill="none">
                   <Path d="M15.1869 8.4166C15.1869 9.60688 15.2406 10.7993 15.1759 11.9853H15.1748C15.0258 13.7006 14.0372 15.2305 12.5367 16.0734C11.0352 16.9173 9.21354 16.9633 7.67147 16.1994C6.12828 15.4344 5.06404 13.9569 4.82498 12.2516C4.78772 11.993 4.76908 11.7321 4.77128 11.4713C4.76689 9.41735 4.76141 7.36219 4.77128 5.30834C4.75374 3.54374 5.63165 1.88975 7.10141 0.914448C8.57227 -0.062112 10.4367 -0.227598 12.0565 0.472759C13.6764 1.17421 14.8316 2.64726 15.1263 4.3877C15.1931 4.96092 15.2216 5.53962 15.2129 6.11722C15.226 6.88335 15.2162 7.64944 15.2162 8.41557L15.1869 8.4166Z" fill="#2D255E"/>
                   <Path d="M0.827101 13.3573C1.34881 13.2576 1.86065 13.5688 2.0141 14.0774C2.74953 16.3407 4.41328 18.1854 6.58896 19.1497C8.76565 20.1142 11.2491 20.1077 13.4205 19.1322C15.5928 18.1567 17.2457 16.3034 17.9701 14.0346C18.1181 13.548 18.6091 13.252 19.1089 13.3474L19.1922 13.3638L19.2021 13.366C19.475 13.4197 19.7128 13.5863 19.8575 13.8253C20.0011 14.0631 20.0383 14.3513 19.9594 14.6188C19.0749 17.4641 17.0167 19.7941 14.3029 21.025C11.5903 22.2547 8.47974 22.2668 5.75727 21.0579C3.03477 19.8479 0.957937 17.5332 0.0513821 14.6954C-0.0406819 14.4148 -0.00780347 14.1079 0.140161 13.8526C0.288122 13.5972 0.538024 13.4175 0.827358 13.3572L0.827101 13.3573Z" fill="#2D255E"/>
+                </Svg>
+              </View> */}
+              {/* <View style={styles.upload}>
+                <Svg style={styles.upload_svg} xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14" fill="none">
+                  <Path d="M5.00005 4.09995L2.10005 6.99995C1.91672 7.18328 1.68338 7.27495 1.40005 7.27495C1.11672 7.27495 0.883382 7.18328 0.700049 6.99995C0.516715 6.81662 0.425049 6.58328 0.425049 6.29995C0.425049 6.01662 0.516715 5.78328 0.700049 5.59995L5.30005 0.999951C5.50005 0.799951 5.73338 0.699951 6.00005 0.699951C6.26672 0.699951 6.50005 0.799951 6.70005 0.999951L11.3 5.59995C11.4834 5.78328 11.575 6.01662 11.575 6.29995C11.575 6.58328 11.4834 6.81662 11.3 6.99995C11.1167 7.18328 10.8834 7.27495 10.6 7.27495C10.3167 7.27495 10.0834 7.18328 9.90005 6.99995L7.00005 4.09995V12.3C7.00005 12.5833 6.90422 12.8208 6.71255 13.0125C6.52088 13.2041 6.28338 13.3 6.00005 13.3C5.71672 13.3 5.47922 13.2041 5.28755 13.0125C5.09588 12.8208 5.00005 12.5833 5.00005 12.3V4.09995Z" fill="#2D255E"/>
+                </Svg>
+              </View> */}
+              {/* <View style={styles.upload_freez}>
+                <Svg style={styles.upload_freez_svg} xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14" fill="none">
+                  <Path d="M5.00005 4.09995L2.10005 6.99995C1.91672 7.18328 1.68338 7.27495 1.40005 7.27495C1.11672 7.27495 0.883382 7.18328 0.700049 6.99995C0.516715 6.81662 0.425049 6.58328 0.425049 6.29995C0.425049 6.01662 0.516715 5.78328 0.700049 5.59995L5.30005 0.999951C5.50005 0.799951 5.73338 0.699951 6.00005 0.699951C6.26672 0.699951 6.50005 0.799951 6.70005 0.999951L11.3 5.59995C11.4834 5.78328 11.575 6.01662 11.575 6.29995C11.575 6.58328 11.4834 6.81662 11.3 6.99995C11.1167 7.18328 10.8834 7.27495 10.6 7.27495C10.3167 7.27495 10.0834 7.18328 9.90005 6.99995L7.00005 4.09995V12.3C7.00005 12.5833 6.90422 12.8208 6.71255 13.0125C6.52088 13.2041 6.28338 13.3 6.00005 13.3C5.71672 13.3 5.47922 13.2041 5.28755 13.0125C5.09588 12.8208 5.00005 12.5833 5.00005 12.3V4.09995Z" fill="#7A8CA0"/>
+                </Svg>
+              </View> */}
+              <View style={styles.processing}>
+                <Svg style={styles.processing_svg} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <Mask id="mask0_1562_1332" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                    <Rect width="24" height="24" fill="#D9D9D9"/>
+                  </Mask>
+                  <G mask="url(#mask0_1562_1332)">
+                    <Path d="M6 16V8C6 7.45 6.19583 6.97917 6.5875 6.5875C6.97917 6.19583 7.45 6 8 6H16C16.55 6 17.0208 6.19583 17.4125 6.5875C17.8042 6.97917 18 7.45 18 8V16C18 16.55 17.8042 17.0208 17.4125 17.4125C17.0208 17.8042 16.55 18 16 18H8C7.45 18 6.97917 17.8042 6.5875 17.4125C6.19583 17.0208 6 16.55 6 16Z" fill="#F8F8F8"/>
+                  </G>
                 </Svg>
               </View>
             </View>
@@ -140,7 +220,17 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     marginBottom: 200,
     gap: 10,
+    marginLeft: 16,
+    marginRight: 16,
   },
+  middle_sec_txt: {
+    flex: 1,
+    justifyContent: 'center', 
+    // alignItems: 'center',
+    marginBottom: 200,
+    gap: 10,
+  },
+
   que: {  
     color: '#DBE1E5',
     textAlign: 'center',
@@ -154,6 +244,46 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
     fontSize: 14,
     fontWeight: '400',
+  },
+
+  response_sec: {
+    color: '#ACB8C0',
+    fontFamily: 'Montserrat',
+    fontSize: 16,
+    fontWeight: 500,
+    backgroundColor: '#415A77',
+    padding: 10,
+    borderWidth: 1,
+    borderBottomRightRadius: 4,
+    borderBottomLeftRadius: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    marginLeft: 75,
+    marginBottom: 24,
+    width: 305,
+  },
+
+  processing_box: {
+    display: 'flex',
+    flexDirection: 'row',
+    paddingTop: 12,
+    paddingBottom: 12,
+    paddingLeft: 10,
+    paddingRight: 10,
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: '#415A77',
+    borderWidth: 1,
+    borderColor: '#ACB8C0',
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 4,
+    width: 62,
+  },
+  processing_color_circle: {
+    width: 10,
+    height: 10,
   },
   num: {
     color: '#ACB8C0',
@@ -179,7 +309,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     position: 'absolute',
-    bottom: 180,
+    bottom: 280,
     zIndex: 3,
     
   },
@@ -212,14 +342,87 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     gap: 12,
-    height: 96,
+    minHeight: 96,
+    height: 184,
     position: "relative",
     bottom: 70,
     marginLeft: 16,
     marginRight: 16,
     zIndex: 3,
+  },
+
+  uploaded_report_section: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 16,
+    alignItems: 'flex-start',
+    overflow: 'hidden',
+    flexGrow: 0,
+  },
+
+  uploaded_report: {
+    padding: 6,
+    width: 200,
+    borderRadius: 10,
+    backgroundColor: '#464D57',
+    height: 72,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  report_cross: {
+    position: 'absolute', 
+    top: 6,
+    right: 6,
+  },
+  uploaded_report_icon_txt: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: -20,
+  },
+  report_cross_icon: {
+    padding: 3.151,
+    backgroundColor: 'rgba(219, 225, 229, 0.70)',
+    width: 20,
+    height: 20,
+    borderRadius: 20,
+  },
+  report_icon: {
+    borderWidth: 1,
+    borderColor: '#FCC300',
+    borderRadius: 6,
+    backgroundColor: '#FCC300',
+    padding: 8,
+    width: 60,
+    height: 60,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  report_svg: {
+    width: 14.286,
+    height: 14.286,
+  }, 
+  uploaded_report_txt: {
 
   },
+  report_txt: {
+    color: '#F8F8F8',
+    fontFamily: 'Montserrat',
+    fontSize: 12,
+    fontweight: 400,  
+  },
+
+  uploaded_report_load: {
+    borderRadius: 6,
+    backgroundColor: '#ACB8C0',
+    width: 72,
+    height: 72,
+  },
+
   input: {
     border: 'transparent',
     position: 'absolute',
@@ -257,6 +460,46 @@ const styles = StyleSheet.create({
   },
   mic_svg: {
 
+  },
+  upload: {
+    backgroundColor: '#F8F8F8',
+    borderRadius: 20,
+    padding: 8,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 40,
+    height: 40,
+  },
+  upload_svg : {
+    width: 11.15,
+    height: 12.6,
+  },
+  upload_freez: {
+    backgroundColor: '#F8F8F8',
+    borderRadius: 20,
+    padding: 8,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 40,
+    height: 40,
+  },
+  upload_freez_svg: {
+      
+  },
+  processing : {
+    backgroundColor: '#ACB8C0',
+    borderRadius: 20,
+    padding: 8,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 40,
+    height: 40,
+  },
+  processing_svg: {
+    
   },
   disclaimer :{
     // margin:'0 auto', 
