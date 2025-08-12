@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Animated, Easing, Image, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Circle, Defs, G, Mask, Path, Rect, Svg } from 'react-native-svg';
 
 import CameraMediaInterface from './ask_me_upload';
@@ -7,20 +7,91 @@ import CameraMediaInterface from './ask_me_upload';
 
 
 
-const LoginCom = () => {
+const AskMe = () => {
   const [showModal, setShowModal] = useState(false);
+
+  const dot1 = useRef(new Animated.Value(0)).current;
+  const dot2 = useRef(new Animated.Value(0)).current;
+  const dot3 = useRef(new Animated.Value(0)).current;
 
   const openCameraMediaInterface = () => {
     setShowModal(true);
   };
 
 
+  const animateDot = (dot, delay) => {
+    return Animated.loop(
+      Animated.sequence([
+        Animated.timing(dot, {
+          toValue: -5, // moves up
+          duration: 300,
+          delay,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(dot, {
+          toValue: 0, // moves down
+          duration: 300,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ])
+    );
+  };
 
-  const reports = [
-    { id: 1, name: 'Blood Report.pdf' },
-    { id: 2, name: 'Blood Report 2.pdf' },
-    { id: 3, name: 'Blood Report 3.pdf' }
-  ];
+  useEffect(() => {
+    animateDot(dot1, 200).start();
+    animateDot(dot2, 300).start();
+    animateDot(dot3, 400).start();
+  }, []);
+
+
+  const Dot = ({ translateY, scale, fill }) => (
+    <Animated.View
+      style={{
+        transform: [{ translateY }, { scale }],
+      }}
+    >
+      <Svg style={styles.processing_color_circle} width="10" height="10" viewBox="0 0 10 10" fill="none">
+        <Circle cx="4" cy="4" r="4" fill={fill} />
+      </Svg>
+    </Animated.View>
+  );
+
+
+  // const categorizedReports = [
+  //   {
+  //     category: "Blood Reports",
+  //     items: [
+  //       { id: 1, name: "Blood Report.pdf" },
+  //       { id: 2, name: "CBC Report.pdf" }
+  //     ]
+  //   },
+  //   {
+  //     category: "MRI Scans",
+  //     items: [
+  //       { id: 3, name: "MRI Brain.pdf" }
+  //     ]
+  //   }
+  // ];
+
+  //  ==== For uploade reports loading ======
+
+  const [reports, setReports] = useState([
+    { id: 1, name: "Blood Report.pdf", uploading: true },
+    { id: 2, name: "X-ray.pdf", uploading: false }
+  ]);
+
+  // Simulate upload completion after 3 seconds for demo
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setReports((prev) =>
+        prev.map((r) => ({ ...r, uploading: false }))
+      );
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
 
   return (
     <View style={styles.mainContainer}>
@@ -62,18 +133,24 @@ const LoginCom = () => {
         </View>
         <Text style={styles.response_sec}>Explain the difference between radiation and chemotherapy?</Text>
         <View style={styles.processing_box}>
-          <Svg style={styles.processing_color_circle} xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
-              <Circle cx="5" cy="5" r="5" fill="#FCC300"/>
-          </Svg>
-          <Svg style={styles.processing_color_circle} xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
-            <Circle cx="5" cy="5" r="5" fill="#ACB8C0"/>
-          </Svg>
-          <Svg style={styles.processing_color_circle} xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
-            <Circle cx="5" cy="5" r="5" fill="#ACB8C0"/>
-          </Svg>
+          <Animated.View style={{ transform: [{ translateY: dot1 }] }}>
+            <Svg style={styles.processing_color_circle} xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 10 10" fill="none">
+                <Circle cx="5" cy="5" r="5" fill="#FCC300"/>
+            </Svg>
+          </Animated.View>
+          <Animated.View style={{ transform: [{ translateY: dot2 }] }}>
+            <Svg style={styles.processing_color_circle} xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 10 10" fill="none">
+                <Circle cx="5" cy="5" r="5" fill="#FCC300"/>
+            </Svg> 
+          </Animated.View>
+          <Animated.View style={{ transform: [{ translateY: dot3 }] }}>
+            <Svg style={styles.processing_color_circle} xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 10 10" fill="none">
+                <Circle cx="5" cy="5" r="5" fill="#FCC300"/>
+            </Svg>
+          </Animated.View> 
         </View>
       </View>
-      {/* <KeyboardAvoidingView> */}
+        {/* <KeyboardAvoidingView style={{ flex: 1 }}> */}
         <View style={styles.sticky_sec}>
           <ScrollView style={styles.suggestions}
             horizontal={true}
@@ -94,16 +171,21 @@ const LoginCom = () => {
                         </Svg>
                       </View>
                       <View style={styles.uploaded_report_icon_txt}>
-                        <View style={styles.report_icon}>
-                            <Svg style={styles.report_svg} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                              <Mask id="mask0_658_2631" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
-                                <Rect width="24" height="24" fill="#D9D9D9"/>
-                              </Mask>
-                              <G mask="url(#mask0_658_2631)">
-                                <Path d="M5 21C4.45 21 3.97917 20.8042 3.5875 20.4125C3.19583 20.0208 3 19.55 3 19V5C3 4.45 3.19583 3.97917 3.5875 3.5875C3.97917 3.19583 4.45 3 5 3H19C19.55 3 20.0208 3.19583 20.4125 3.5875C20.8042 3.97917 21 4.45 21 5V19C21 19.55 20.8042 20.0208 20.4125 20.4125C20.0208 20.8042 19.55 21 19 21H5ZM5 19H19V5H5V19ZM8 17H13C13.2833 17 13.5208 16.9042 13.7125 16.7125C13.9042 16.5208 14 16.2833 14 16C14 15.7167 13.9042 15.4792 13.7125 15.2875C13.5208 15.0958 13.2833 15 13 15H8C7.71667 15 7.47917 15.0958 7.2875 15.2875C7.09583 15.4792 7 15.7167 7 16C7 16.2833 7.09583 16.5208 7.2875 16.7125C7.47917 16.9042 7.71667 17 8 17ZM8 13H16C16.2833 13 16.5208 12.9042 16.7125 12.7125C16.9042 12.5208 17 12.2833 17 12C17 11.7167 16.9042 11.4792 16.7125 11.2875C16.5208 11.0958 16.2833 11 16 11H8C7.71667 11 7.47917 11.0958 7.2875 11.2875C7.09583 11.4792 7 11.7167 7 12C7 12.2833 7.09583 12.5208 7.2875 12.7125C7.47917 12.9042 7.71667 13 8 13ZM8 9H16C16.2833 9 16.5208 8.90417 16.7125 8.7125C16.9042 8.52083 17 8.28333 17 8C17 7.71667 16.9042 7.47917 16.7125 7.2875C16.5208 7.09583 16.2833 7 16 7H8C7.71667 7 7.47917 7.09583 7.2875 7.2875C7.09583 7.47917 7 7.71667 7 8C7 8.28333 7.09583 8.52083 7.2875 8.7125C7.47917 8.90417 7.71667 9 8 9Z" fill="#1C1B1F"/>
-                              </G>
-                            </Svg>
-                        </View>
+                        { report.uploading ? (
+                        <ActivityIndicator size="small" color="#007AFF" />
+                        ) : (
+                          <View style={styles.report_icon}>
+                              <Svg style={styles.report_svg} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <Mask id="mask0_658_2631" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                  <Rect width="24" height="24" fill="#D9D9D9"/>
+                                </Mask>
+                                <G mask="url(#mask0_658_2631)">
+                                  <Path d="M5 21C4.45 21 3.97917 20.8042 3.5875 20.4125C3.19583 20.0208 3 19.55 3 19V5C3 4.45 3.19583 3.97917 3.5875 3.5875C3.97917 3.19583 4.45 3 5 3H19C19.55 3 20.0208 3.19583 20.4125 3.5875C20.8042 3.97917 21 4.45 21 5V19C21 19.55 20.8042 20.0208 20.4125 20.4125C20.0208 20.8042 19.55 21 19 21H5ZM5 19H19V5H5V19ZM8 17H13C13.2833 17 13.5208 16.9042 13.7125 16.7125C13.9042 16.5208 14 16.2833 14 16C14 15.7167 13.9042 15.4792 13.7125 15.2875C13.5208 15.0958 13.2833 15 13 15H8C7.71667 15 7.47917 15.0958 7.2875 15.2875C7.09583 15.4792 7 15.7167 7 16C7 16.2833 7.09583 16.5208 7.2875 16.7125C7.47917 16.9042 7.71667 17 8 17ZM8 13H16C16.2833 13 16.5208 12.9042 16.7125 12.7125C16.9042 12.5208 17 12.2833 17 12C17 11.7167 16.9042 11.4792 16.7125 11.2875C16.5208 11.0958 16.2833 11 16 11H8C7.71667 11 7.47917 11.0958 7.2875 11.2875C7.09583 11.4792 7 11.7167 7 12C7 12.2833 7.09583 12.5208 7.2875 12.7125C7.47917 12.9042 7.71667 13 8 13ZM8 9H16C16.2833 9 16.5208 8.90417 16.7125 8.7125C16.9042 8.52083 17 8.28333 17 8C17 7.71667 16.9042 7.47917 16.7125 7.2875C16.5208 7.09583 16.2833 7 16 7H8C7.71667 7 7.47917 7.09583 7.2875 7.2875C7.09583 7.47917 7 7.71667 7 8C7 8.28333 7.09583 8.52083 7.2875 8.7125C7.47917 8.90417 7.71667 9 8 9Z" fill="#1C1B1F"/>
+                                </G>
+                              </Svg>
+                          </View>
+                        )}
+
                         <View style={styles.uploaded_report_txt}>
                           <Text style={styles.report_txt}>Blood Report.pdf</Text>
                         </View>
@@ -118,11 +200,11 @@ const LoginCom = () => {
                   //       <Path d="M11.9923 4.85046L11.1507 4.00879L8.00007 7.15938L4.84948 4.00879L4.00781 4.85046L7.15841 8.00105L4.00781 11.1516L4.84948 11.9933L8.00007 8.84272L11.1507 11.9933L11.9923 11.1516L8.84174 8.00105L11.9923 4.85046Z" fill="#656565"/>
                   //     </Svg>
                   //   </View>
-                  // </View>
+                  // </View> 
                 ))
               }
             </ScrollView>
-            <TextInput type="text" placeholder='Ask me.....' multiline={true} numberOfLines={2} width={300} height={300} style={styles.input} />
+            <TextInput type="text" placeholder='Ask me.....' placeholderTextColor='#ACB8C0'  multiline={true} numberOfLines={2} width={300} height={300} style={[styles.input, { maxHeight: 120 }]} />
             <View style={styles.add_mic_svgs}>
               <View style={styles.add_icon} onPress={openCameraMediaInterface}>
                 <Svg style={styles.add_svg} xmlns="http://www.w3.org/2000/Svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -159,7 +241,7 @@ const LoginCom = () => {
           </View>
           <Text style={styles.disclaimer}>Ask AI can make mistakes</Text>
         </View>
-      {/* </KeyboardAvoidingView> */}
+        {/* </KeyboardAvoidingView> */}
       <Image source={require('../../constants/Ellipse 432.png')} alt='img' style={styles.anime}></Image>
       <CameraMediaInterface visible={showModal} onClose={() => setShowModal(false)} />
     </View>
@@ -167,11 +249,11 @@ const LoginCom = () => {
 }       
 
  
-export default LoginCom
+export default AskMe
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1,
+    // flex: 1,
     // backgroundColor: '#19212E',
     backgroundColor: '#11161eff',
     height: '100%',
@@ -215,7 +297,7 @@ const styles = StyleSheet.create({
     height: 24,
   },
   middle_sec: {
-    flex: 1,
+    // flex: 1,
     justifyContent: 'center', 
     // alignItems: 'center',
     marginBottom: 200,
@@ -224,7 +306,7 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   middle_sec_txt: {
-    flex: 1,
+    // flex: 1,
     justifyContent: 'center', 
     // alignItems: 'center',
     marginBottom: 200,
@@ -266,12 +348,13 @@ const styles = StyleSheet.create({
   processing_box: {
     display: 'flex',
     flexDirection: 'row',
-    paddingTop: 12,
-    paddingBottom: 12,
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingTop: 11,
+    paddingBottom: 9,
+    paddingLeft: 8,
+    paddingRight: 8,
     alignItems: 'center',
-    gap: 6,
+    justifyContent: 'center',
+    gap: 4,
     backgroundColor: '#415A77',
     borderWidth: 1,
     borderColor: '#ACB8C0',
@@ -282,8 +365,8 @@ const styles = StyleSheet.create({
     width: 62,
   },
   processing_color_circle: {
-    width: 10,
-    height: 10,
+    width: 4,
+    height: 4,
   },
   num: {
     color: '#ACB8C0',
@@ -296,8 +379,9 @@ const styles = StyleSheet.create({
   sticky_sec : {
     position: 'relative',
     margin: '20px 16px 50px',
+    flex: 1,
   
-    // position: 'absolute',
+    // position: 'absolute', 
     // bottom: 0,
     // left: 0,
     // right: 0,
@@ -359,8 +443,9 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     flexGrow: 0,
   },
-
+ 
   uploaded_report: {
+
     padding: 6,
     width: 200,
     borderRadius: 10,
@@ -430,8 +515,11 @@ const styles = StyleSheet.create({
     left: 12,
     height: 60,
     // width: 'calc(100% - 24px)',
-    color: '#ACB8C0',
-    placeholderTextColor: '#ACB8C0',
+    // color: '#ACB8C0',
+    color: '#F8F8F8',
+    fontFamily: 'Montserrat',
+    fontSize: 16,
+    fontWeight: 500,
   },
   add_mic_svgs: {
     display: 'flex',
