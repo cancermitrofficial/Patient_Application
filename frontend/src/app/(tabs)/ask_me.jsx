@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Animated, Easing, Image, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Animated, Easing, FlatList, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Circle, Defs, G, Mask, Path, Rect, Svg } from 'react-native-svg';
 
 import CameraMediaInterface from './ask_me_upload';
@@ -14,9 +14,6 @@ const AskMe = () => {
   const dot2 = useRef(new Animated.Value(0)).current;
   const dot3 = useRef(new Animated.Value(0)).current;
 
-  const openCameraMediaInterface = () => {
-    setShowModal(true);
-  };
 
 
   const animateDot = (dot, delay) => {
@@ -93,6 +90,37 @@ const AskMe = () => {
   }, []);
 
 
+
+  // Messages inside the middle section
+  const messages = [
+    {
+      id: 1,
+      question: 'Explain the difference between radiation and chemotherapy?',
+      ans: 'Gorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut rhoncus ex. Suspendisse ac rhoncus nisl, eu tempor urna. Curabitur vel bibendum lorem. Morbi convallis convallis diam sit amet lacinia. Aliquam in els.'
+    },
+    {
+      id: 2,
+      question: 'What are the side effects of chemotherapy?',
+      ans: 'Chemotherapy can cause nausea, vomiting, fatigue, hair loss, and other side effects depending on the type of drugs used.'
+    },
+    {
+      id: 3,
+      question: 'How is radiation therapy delivered?',
+      ans: 'Radiation therapy is usually given using a machine that directs high-energy beams to the cancer cells.'
+    }
+  ];
+
+  const renderItem = ({ item }) => {
+    return (
+        <View style={styles.middle_sec_txt}>
+          <Text style={styles.response_sec}>{item.question}</Text>
+          <Text style={styles.response_sec_ans}>{item.ans}</Text>
+        </View>
+    )
+    // return null;
+  };
+
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.header}>
@@ -128,10 +156,16 @@ const AskMe = () => {
       </View>
       <View style={styles.middle_sec}>
         <View style={styles.middle_sec_txt}>
-          <Text style={styles.que}>How can I help you ?</Text>
-          <Text style={styles.sec_code}>Enter the security code sent to <Text style={styles.num}>+91 9654102315</Text> </Text>
+          {/* <Text style={styles.que}>How can I help you ?</Text> */}
+          {/* <Text style={styles.sec_code}>Enter the security code sent to <Text style={styles.num}>+91 9654102315</Text> </Text> */}
+          <FlatList
+            data={messages}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id.toString()}
+            showsVerticalScrollIndicator={false}
+          />
         </View>
-        <Text style={styles.response_sec}>Explain the difference between radiation and chemotherapy?</Text>
+        {/* <Text style={styles.response_sec}>Explain the difference between radiation and chemotherapy?</Text>
         <View style={styles.processing_box}>
           <Animated.View style={{ transform: [{ translateY: dot1 }] }}>
             <Svg style={styles.processing_color_circle} xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 10 10" fill="none">
@@ -148,7 +182,7 @@ const AskMe = () => {
                 <Circle cx="5" cy="5" r="5" fill="#FCC300"/>
             </Svg>
           </Animated.View> 
-        </View>
+        </View> */}
       </View>
         {/* <KeyboardAvoidingView style={{ flex: 1 }}> */}
         <View style={styles.sticky_sec}>
@@ -206,11 +240,11 @@ const AskMe = () => {
             </ScrollView>
             <TextInput type="text" placeholder='Ask me.....' placeholderTextColor='#ACB8C0'  multiline={true} numberOfLines={2} width={300} height={300} style={[styles.input, { maxHeight: 120 }]} />
             <View style={styles.add_mic_svgs}>
-              <View style={styles.add_icon} onPress={openCameraMediaInterface}>
+              <TouchableOpacity style={styles.add_icon} onPress={() => setShowModal(true)}>
                 <Svg style={styles.add_svg} xmlns="http://www.w3.org/2000/Svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
                   <Path d="M6 8H1C0.716667 8 0.479167 7.90417 0.2875 7.7125C0.0958333 7.52083 0 7.28333 0 7C0 6.71667 0.0958333 6.47917 0.2875 6.2875C0.479167 6.09583 0.716667 6 1 6H6V1C6 0.716667 6.09583 0.479167 6.2875 0.2875C6.47917 0.0958333 6.71667 0 7 0C7.28333 0 7.52083 0.0958333 7.7125 0.2875C7.90417 0.479167 8 0.716667 8 1V6H13C13.2833 6 13.5208 6.09583 13.7125 6.2875C13.9042 6.47917 14 6.71667 14 7C14 7.28333 13.9042 7.52083 13.7125 7.7125C13.5208 7.90417 13.2833 8 13 8H8V13C8 13.2833 7.90417 13.5208 7.7125 13.7125C7.52083 13.9042 7.28333 14 7 14C6.71667 14 6.47917 13.9042 6.2875 13.7125C6.09583 13.5208 6 13.2833 6 13V8Z" fill="#F8F8F8"/>
                 </Svg>
-              </View>
+              </TouchableOpacity>
               {/* <View style={styles.mic}>
                 <Svg style={styles.mic_svg} xmlns="http://www.w3.org/2000/Svg" width="20" height="22" viewBox="0 0 20 22" fill="none">
                   <Path d="M15.1869 8.4166C15.1869 9.60688 15.2406 10.7993 15.1759 11.9853H15.1748C15.0258 13.7006 14.0372 15.2305 12.5367 16.0734C11.0352 16.9173 9.21354 16.9633 7.67147 16.1994C6.12828 15.4344 5.06404 13.9569 4.82498 12.2516C4.78772 11.993 4.76908 11.7321 4.77128 11.4713C4.76689 9.41735 4.76141 7.36219 4.77128 5.30834C4.75374 3.54374 5.63165 1.88975 7.10141 0.914448C8.57227 -0.062112 10.4367 -0.227598 12.0565 0.472759C13.6764 1.17421 14.8316 2.64726 15.1263 4.3877C15.1931 4.96092 15.2216 5.53962 15.2129 6.11722C15.226 6.88335 15.2162 7.64944 15.2162 8.41557L15.1869 8.4166Z" fill="#2D255E"/>
@@ -243,7 +277,17 @@ const AskMe = () => {
         </View>
         {/* </KeyboardAvoidingView> */}
       <Image source={require('../../constants/Ellipse 432.png')} alt='img' style={styles.anime}></Image>
-      <CameraMediaInterface visible={showModal} onClose={() => setShowModal(false)} />
+        
+      <Modal 
+      visible={showModal} 
+      transparent 
+      animationType="slide"
+      statusBarTranslucent={true}
+      animationIn="slideInUp"
+      animationOut="slideOutDown"
+      >  
+        <CameraMediaInterface onClose={ () => setShowModal(false)} />
+      </Modal>
     </View>
   )
 }       
@@ -293,33 +337,36 @@ const styles = StyleSheet.create({
     height: 24,
   },
   dots_svg: {
-    width: 24,
+    width: 24,  
     height: 24,
   },
   middle_sec: {
     // flex: 1,
     justifyContent: 'center', 
-    // alignItems: 'center',
-    marginBottom: 200,
+    alignItems: 'center',
+    // marginBottom: 200,
+    marginBottom: 0,
     gap: 10,
     marginLeft: 16,
     marginRight: 16,
+    height: '80%',
   },
   middle_sec_txt: {
     // flex: 1,
     justifyContent: 'center', 
     // alignItems: 'center',
-    marginBottom: 200,
+    // marginBottom: 200,
+    marginBottom: 120,
     gap: 10,
   },
 
-  que: {  
-    color: '#DBE1E5',
-    textAlign: 'center',
-    fontFamily: 'Manrope',
-    fontSize: 30,
-    fontWeight: '600',
-  },
+  // que: {  
+  //   color: '#DBE1E5',
+  //   textAlign: 'center',
+  //   fontFamily: 'Manrope',
+  //   fontSize: 30,
+  //   fontWeight: '600',
+  // },
   sec_code: {
     color: '#ACB8C0',
     textAlign: 'center',
@@ -343,6 +390,14 @@ const styles = StyleSheet.create({
     marginLeft: 75,
     marginBottom: 24,
     width: 305,
+  },
+  response_sec_ans: {
+    color: '#F8F8F8',
+    fontFamily: 'Montserrat',
+    fontSize: 16,
+    fontWeight: 400,
+    padding: 0,
+    margin: 0,
   },
 
   processing_box: {
@@ -393,7 +448,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     position: 'absolute',
-    bottom: 280,
+    // bottom: 280,
+    bottom: 250,
     zIndex: 3,
     
   },
@@ -429,7 +485,8 @@ const styles = StyleSheet.create({
     minHeight: 96,
     height: 184,
     position: "relative",
-    bottom: 70,
+    // bottom: 70,
+    bottom: 120,
     marginLeft: 16,
     marginRight: 16,
     zIndex: 3,

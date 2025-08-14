@@ -1,21 +1,15 @@
 import { BlurView } from 'expo-blur';
-import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { G, Mask, Path, Rect, Svg } from 'react-native-svg';
 
 
 
 // const { width, height } = Dimensions.get('window');
 
-export default function CameraMediaInterface({ visible, onClose }) {
+export default function CameraMediaInterface({ onClose }) {
 
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      transparent={true}
-      onRequestClose={onClose}
-      style={{justifyContent: 'flex-end', height: '100%', margin: 0, padding: 0 }}
-    >
+    <View style={{justifyContent: 'flex-end', height: '100%', margin: 0, padding: 0 }}>
       <View style={styles.container}>
         {/* Main content area */}
         <View style={styles.mainContent}>
@@ -25,7 +19,7 @@ export default function CameraMediaInterface({ visible, onClose }) {
         {/* Bottom sheet with blur effect */}
         <BlurView intensity={80} tint="dark" style={styles.bottomSheet}>
           {/* Close button */}
-          <TouchableOpacity style={styles.closeButton}>
+          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
               <Svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <Mask id="mask0_662_5230" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
                       <Rect width="24" height="24" fill="#D9D9D9"/>
@@ -53,7 +47,7 @@ export default function CameraMediaInterface({ visible, onClose }) {
               <Text style={styles.optionText}>Camera</Text>
             </Pressable>
 
-            <Pressable style={({ pressed}) => pressed ? [styles.optionButton, styles.optionButtonPressed] : styles.optionButton}>
+            <Pressable style={({ pressed }) => pressed ? [styles.optionButton, styles.optionButtonPressed] : styles.optionButton}>
               <View style={styles.iconContainer}>
                   <Svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
                       <Mask id="mask0_1342_2333" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="30" height="30">
@@ -95,7 +89,7 @@ export default function CameraMediaInterface({ visible, onClose }) {
         {/* Background blur circle */}
         <BlurView intensity={60} style={styles.backgroundBlur} />
       </View>
-    </Modal>
+    </View>
   );
 } 
 
@@ -104,7 +98,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(70, 77, 87, 0.80)',
     position: 'relative',
-    height: '100%',
+    height: '180%',
     margin: 0,
     padding: 0,
   },
@@ -139,6 +133,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 238,
+    // height: 283,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     overflow: 'hidden',
@@ -199,7 +194,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     // borderRadius: 150,
-    backgroundColor: 'rgba(70, 77, 87, 0.80)',
+    // backgroundColor: 'rgba(70, 77, 87, 0.80)',
     zIndex: -1, 
   },
 
