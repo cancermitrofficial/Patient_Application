@@ -9,8 +9,24 @@ import CameraMediaInterface from './ask_me_upload';
 
 const AskMe = () => {
   const [showModal, setShowModal] = useState(false);
-  
 
+  const [inputText, setInputText] = useState("");
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false); // new state
+
+// send handler 
+  const handleSend = () => {
+    if (!inputText.trim() && uploadedFiles.length === 0) return;
+
+    setIsProcessing(true); // show loader
+    // simulate API call
+    setTimeout(() => {
+      setIsProcessing(false); // hide loader after response
+      setInputText("");
+      setUploadedFiles([]);
+    }, 3000);
+  };
+  
   const dot1 = useRef(new Animated.Value(0)).current;
   const dot2 = useRef(new Animated.Value(0)).current;
   const dot3 = useRef(new Animated.Value(0)).current;
@@ -279,13 +295,39 @@ const AskMe = () => {
                     ))
                   }
                 </ScrollView>
-                <TextInput type="text" placeholder='Ask me.....' placeholderTextColor='#ACB8C0'  multiline={true} numberOfLines={2} width={300} height={300} style={[styles.input, { maxHeight: 120 }]} />
+                <TextInput type="text" placeholder='Ask me.....' placeholderTextColor='#ACB8C0'  multiline={true} numberOfLines={2} width={300} height={300} value={inputText} onChangeText={setInputText} style={[styles.input, { maxHeight: 120 }]} />
                 <View style={styles.add_mic_svgs}>
                   <TouchableOpacity style={styles.add_icon} onPress={() => setShowModal(true)}>
                     <Svg style={styles.add_svg} xmlns="http://www.w3.org/2000/Svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
                       <Path d="M6 8H1C0.716667 8 0.479167 7.90417 0.2875 7.7125C0.0958333 7.52083 0 7.28333 0 7C0 6.71667 0.0958333 6.47917 0.2875 6.2875C0.479167 6.09583 0.716667 6 1 6H6V1C6 0.716667 6.09583 0.479167 6.2875 0.2875C6.47917 0.0958333 6.71667 0 7 0C7.28333 0 7.52083 0.0958333 7.7125 0.2875C7.90417 0.479167 8 0.716667 8 1V6H13C13.2833 6 13.5208 6.09583 13.7125 6.2875C13.9042 6.47917 14 6.71667 14 7C14 7.28333 13.9042 7.52083 13.7125 7.7125C13.5208 7.90417 13.2833 8 13 8H8V13C8 13.2833 7.90417 13.5208 7.7125 13.7125C7.52083 13.9042 7.28333 14 7 14C6.71667 14 6.47917 13.9042 6.2875 13.7125C6.09583 13.5208 6 13.2833 6 13V8Z" fill="#F8F8F8"/>
                     </Svg>
                   </TouchableOpacity>
+
+                  {isProcessing ? (
+                    <TouchableOpacity style={styles.processing} activeOpacity={0.7}>
+                      <Svg style={styles.processing_svg} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <Mask id="mask0_1562_1332" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                          <Rect width="24" height="24" fill="#D9D9D9"/>
+                        </Mask>
+                        <G mask="url(#mask0_1562_1332)">
+                          <Path d="M6 16V8C6 7.45 6.19583 6.97917 6.5875 6.5875C6.97917 6.19583 7.45 6 8 6H16C16.55 6 17.0208 6.19583 17.4125 6.5875C17.8042 6.97917 18 7.45 18 8V16C18 16.55 17.8042 17.0208 17.4125 17.4125C17.0208 17.8042 16.55 18 16 18H8C7.45 18 6.97917 17.8042 6.5875 17.4125C6.19583 17.0208 6 16.55 6 16Z" fill="#F8F8F8"/>
+                        </G>
+                      </Svg>
+                    </TouchableOpacity>
+                  ) : inputText.trim().length > 0 || uploadedFiles.length > 0 ? (
+                  <TouchableOpacity style={styles.upload} onPress={handleSend} activeOpacity={0.7}>
+                    <Svg style={styles.upload_svg} xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14" fill="none">
+                      <Path d="M5.00005 4.09995L2.10005 6.99995C1.91672 7.18328 1.68338 7.27495 1.40005 7.27495C1.11672 7.27495 0.883382 7.18328 0.700049 6.99995C0.516715 6.81662 0.425049 6.58328 0.425049 6.29995C0.425049 6.01662 0.516715 5.78328 0.700049 5.59995L5.30005 0.999951C5.50005 0.799951 5.73338 0.699951 6.00005 0.699951C6.26672 0.699951 6.50005 0.799951 6.70005 0.999951L11.3 5.59995C11.4834 5.78328 11.575 6.01662 11.575 6.29995C11.575 6.58328 11.4834 6.81662 11.3 6.99995C11.1167 7.18328 10.8834 7.27495 10.6 7.27495C10.3167 7.27495 10.0834 7.18328 9.90005 6.99995L7.00005 4.09995V12.3C7.00005 12.5833 6.90422 12.8208 6.71255 13.0125C6.52088 13.2041 6.28338 13.3 6.00005 13.3C5.71672 13.3 5.47922 13.2041 5.28755 13.0125C5.09588 12.8208 5.00005 12.5833 5.00005 12.3V4.09995Z" fill="#2D255E"/>
+                    </Svg>
+                  </TouchableOpacity>
+                ) : (
+                    <TouchableOpacity style={styles.mic}>
+                      <Svg style={styles.mic_svg} xmlns="http://www.w3.org/2000/Svg" width="20" height="22" viewBox="0 0 20 22" fill="none">
+                        <Path d="M15.1869 8.4166C15.1869 9.60688 15.2406 10.7993 15.1759 11.9853H15.1748C15.0258 13.7006 14.0372 15.2305 12.5367 16.0734C11.0352 16.9173 9.21354 16.9633 7.67147 16.1994C6.12828 15.4344 5.06404 13.9569 4.82498 12.2516C4.78772 11.993 4.76908 11.7321 4.77128 11.4713C4.76689 9.41735 4.76141 7.36219 4.77128 5.30834C4.75374 3.54374 5.63165 1.88975 7.10141 0.914448C8.57227 -0.062112 10.4367 -0.227598 12.0565 0.472759C13.6764 1.17421 14.8316 2.64726 15.1263 4.3877C15.1931 4.96092 15.2216 5.53962 15.2129 6.11722C15.226 6.88335 15.2162 7.64944 15.2162 8.41557L15.1869 8.4166Z" fill="#2D255E"/>
+                        <Path d="M0.827101 13.3573C1.34881 13.2576 1.86065 13.5688 2.0141 14.0774C2.74953 16.3407 4.41328 18.1854 6.58896 19.1497C8.76565 20.1142 11.2491 20.1077 13.4205 19.1322C15.5928 18.1567 17.2457 16.3034 17.9701 14.0346C18.1181 13.548 18.6091 13.252 19.1089 13.3474L19.1922 13.3638L19.2021 13.366C19.475 13.4197 19.7128 13.5863 19.8575 13.8253C20.0011 14.0631 20.0383 14.3513 19.9594 14.6188C19.0749 17.4641 17.0167 19.7941 14.3029 21.025C11.5903 22.2547 8.47974 22.2668 5.75727 21.0579C3.03477 19.8479 0.957937 17.5332 0.0513821 14.6954C-0.0406819 14.4148 -0.00780347 14.1079 0.140161 13.8526C0.288122 13.5972 0.538024 13.4175 0.827358 13.3572L0.827101 13.3573Z" fill="#2D255E"/>
+                      </Svg>
+                    </TouchableOpacity>
+                )}
                   {/* <View style={styles.mic}>
                     <Svg style={styles.mic_svg} xmlns="http://www.w3.org/2000/Svg" width="20" height="22" viewBox="0 0 20 22" fill="none">
                       <Path d="M15.1869 8.4166C15.1869 9.60688 15.2406 10.7993 15.1759 11.9853H15.1748C15.0258 13.7006 14.0372 15.2305 12.5367 16.0734C11.0352 16.9173 9.21354 16.9633 7.67147 16.1994C6.12828 15.4344 5.06404 13.9569 4.82498 12.2516C4.78772 11.993 4.76908 11.7321 4.77128 11.4713C4.76689 9.41735 4.76141 7.36219 4.77128 5.30834C4.75374 3.54374 5.63165 1.88975 7.10141 0.914448C8.57227 -0.062112 10.4367 -0.227598 12.0565 0.472759C13.6764 1.17421 14.8316 2.64726 15.1263 4.3877C15.1931 4.96092 15.2216 5.53962 15.2129 6.11722C15.226 6.88335 15.2162 7.64944 15.2162 8.41557L15.1869 8.4166Z" fill="#2D255E"/>
@@ -302,7 +344,7 @@ const AskMe = () => {
                       <Path d="M5.00005 4.09995L2.10005 6.99995C1.91672 7.18328 1.68338 7.27495 1.40005 7.27495C1.11672 7.27495 0.883382 7.18328 0.700049 6.99995C0.516715 6.81662 0.425049 6.58328 0.425049 6.29995C0.425049 6.01662 0.516715 5.78328 0.700049 5.59995L5.30005 0.999951C5.50005 0.799951 5.73338 0.699951 6.00005 0.699951C6.26672 0.699951 6.50005 0.799951 6.70005 0.999951L11.3 5.59995C11.4834 5.78328 11.575 6.01662 11.575 6.29995C11.575 6.58328 11.4834 6.81662 11.3 6.99995C11.1167 7.18328 10.8834 7.27495 10.6 7.27495C10.3167 7.27495 10.0834 7.18328 9.90005 6.99995L7.00005 4.09995V12.3C7.00005 12.5833 6.90422 12.8208 6.71255 13.0125C6.52088 13.2041 6.28338 13.3 6.00005 13.3C5.71672 13.3 5.47922 13.2041 5.28755 13.0125C5.09588 12.8208 5.00005 12.5833 5.00005 12.3V4.09995Z" fill="#7A8CA0"/>
                     </Svg>
                   </View> */}
-                  <View style={styles.processing}>
+                  {/* <View style={styles.processing}>
                     <Svg style={styles.processing_svg} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                       <Mask id="mask0_1562_1332" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
                         <Rect width="24" height="24" fill="#D9D9D9"/>
@@ -311,7 +353,7 @@ const AskMe = () => {
                         <Path d="M6 16V8C6 7.45 6.19583 6.97917 6.5875 6.5875C6.97917 6.19583 7.45 6 8 6H16C16.55 6 17.0208 6.19583 17.4125 6.5875C17.8042 6.97917 18 7.45 18 8V16C18 16.55 17.8042 17.0208 17.4125 17.4125C17.0208 17.8042 16.55 18 16 18H8C7.45 18 6.97917 17.8042 6.5875 17.4125C6.19583 17.0208 6 16.55 6 16Z" fill="#F8F8F8"/>
                       </G>
                     </Svg>
-                  </View>
+                  </View> */}
                 </View>
               </View>
               <Text style={styles.disclaimer}>Ask AI can make mistakes</Text>
@@ -539,7 +581,7 @@ const styles = StyleSheet.create({
     height: 184,
     position: "relative",
     // bottom: 70,
-    bottom: 120,
+    bottom: 135,
     marginLeft: 16,
     marginRight: 16,
     zIndex: 3,
