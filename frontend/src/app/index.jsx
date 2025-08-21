@@ -1,12 +1,12 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import React from 'react';
 import { useRouter } from 'expo-router';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const Index = () => {
   const router = useRouter();
 
   return (
-    <View style={styles.container} >
+    <View style={styles.container}>
       <TouchableOpacity onPress={() => router.push('(tabs)/ask_me')}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>AI Screen</Text>

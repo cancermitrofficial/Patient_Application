@@ -1,17 +1,30 @@
 // import { View, Text } from 'react-native'
-import React from 'react'
-import { Stack } from 'expo-router'
+import { Stack } from 'expo-router';
+import React from 'react';
+import { StyleSheet, useColorScheme } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+
+
 
 
 const RootLayout = () => {
+  const colorScheme = useColorScheme();
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-
-
-    </Stack>
-    
+    <SafeAreaView style={[styles.safeArea, {backgroundColor: colorScheme === "dark" ? "#333232ff" : "white",}]}>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+      </Stack>
+    </SafeAreaView>
   )
 }
   
 export default RootLayout   
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    // backgroundColor: '#525050ff',
+    color: 'white',
+  }
+});
