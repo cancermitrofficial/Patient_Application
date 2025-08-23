@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   // },
   bottomSheet: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 170,
     left: 0,
     right: 0,
     height: 238,
